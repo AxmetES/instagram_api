@@ -1,6 +1,9 @@
 import requests
 import os
 import pprint
+import json
+import urllib.parse
+from urllib.parse import urlparse
 
 
 def path_dir(directory):
@@ -29,22 +32,37 @@ def get_image_link(response_spacex):
     return image_links
 
 
-def get_hubble_image(url, params):
-    response = requests.get(url=url, params=params)
-    response_hubble = response.json()['image_files']
-    for item in response_hubble:
-        get_image_extension(item.get('file_url'))
+def download_hubble_image(url, params, directory):
+    extension = get_image_extension(url)
+    filename = f'{params}.{extension}'
+
+    response = requests.get(url, verify=False)
+    response.raise_for_status()
+    with open(directory + filename, 'wb') as file:
+        file.write(response.content)
+
+
+def get_hubble_image_url(url):
+    response = requests.get(url=url)
+    response_hubble = response.json()
+    hubble_image_urls = [item['file_url'] for item in response_hubble['image_files']]
+
+    lenth_of_list = len(hubble_image_urls)
+    last_url = hubble_image_urls[lenth_of_list - 1]
+    if 'https:' not in last_url:
+        last_url = 'https:' + last_url
+    return last_url
 
 
 def get_image_extension(url):
     lst = url.split('.')
     extension = lst[-1]
-    print(extension)
+    return extension
 
 
 def main():
-    params_hubble = {' ': 1}
-    hubble_api = 'http://hubblesite.org/api/v3/image/1'
+    hubble_params = 1
+    hubble_api = f'http://hubblesite.org/api/v3/image/{hubble_params}'
     spacex_url = 'https://api.spacexdata.com/v3/launches/latest'
     directory = 'images/'
     path_dir(directory)
@@ -53,12 +71,10 @@ def main():
     # response_spacex = get_spacex_api(spacex_url)
     #
     # image_links = get_image_link(response_spacex)
-
-    # print(image_links)
-
     # fetch_spacex_last_launch(image_links, directory)
 
-    get_hubble_image(hubble_api, params_hubble)
+    last_url = get_hubble_image_url(hubble_api)
+    download_hubble_image(last_url, hubble_params, directory)
 
 
 if __name__ == '__main__':
