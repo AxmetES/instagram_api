@@ -33,7 +33,13 @@ def get_hubble_image(url, params):
     response = requests.get(url=url, params=params)
     response_hubble = response.json()['image_files']
     for item in response_hubble:
-        print(item.get('file_url'))
+        get_image_extension(item.get('file_url'))
+
+
+def get_image_extension(url):
+    lst = url.split('.')
+    extension = lst[-1]
+    print(extension)
 
 
 def main():
@@ -42,6 +48,7 @@ def main():
     spacex_url = 'https://api.spacexdata.com/v3/launches/latest'
     directory = 'images/'
     path_dir(directory)
+    # str = '//imgsrc.hubblesite.org/hvi/uploads/image_file/image_attachment/1/full_jpg.jpg'
 
     # response_spacex = get_spacex_api(spacex_url)
     #
