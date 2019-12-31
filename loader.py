@@ -35,20 +35,31 @@ def get_image_link(response_spacex):
 def download_hubble_image(url, params, directory):
     extension = get_image_extension(url)
     filename = f'{params}.{extension}'
-
     response = requests.get(url, verify=False)
     response.raise_for_status()
     with open(directory + filename, 'wb') as file:
         file.write(response.content)
+    print(f'id {params} image downloaded')
+
+
+def get_collections__urls(params, directory):
+    url = f'http://hubblesite.org/api/v3/image/{params}'
+    response = requests.get(url=url)
+    response_data = response.json()
+    hubble_image_urls = [item['file_url'] for item in response_data['image_files']]
+    for link in hubble_image_urls:
+        if 'http:' not in link:
+            link = 'http:' + link
+            download_hubble_image(link, params, directory)
 
 
 def get_hubble_image_url(url):
     response = requests.get(url=url)
-    response_hubble = response.json()
-    hubble_image_urls = [item['file_url'] for item in response_hubble['image_files']]
+    response_data = response.json()
+    hubble_image_urls = [item['file_url'] for item in response_data['image_files']]
 
-    lenth_of_list = len(hubble_image_urls)
-    last_url = hubble_image_urls[lenth_of_list - 1]
+    len_of_list = len(hubble_image_urls)
+    last_url = hubble_image_urls[len_of_list - 1]
     if 'https:' not in last_url:
         last_url = 'https:' + last_url
     return last_url
@@ -60,21 +71,33 @@ def get_image_extension(url):
     return extension
 
 
+def get_collection_id(url, params, directory):
+    response = requests.get(url=url, params=params)
+    response.raise_for_status()
+    response_data = response.json()
+    images_id = [item['id'] for item in response_data]
+    for item in images_id:
+        get_collections__urls(item, directory)
+
+
 def main():
-    hubble_params = 1
-    hubble_api = f'http://hubblesite.org/api/v3/image/{hubble_params}'
+    # params_image_id = 3
+    params_collection_name = {'page': 'all', 'collection_name': 'holiday_cards'}
+
+    # hubble_api_image_id = f'http://hubblesite.org/api/v3/image/{params_image_id}'
+    hubble_api = f'http://hubblesite.org/api/v3/images'
     spacex_url = 'https://api.spacexdata.com/v3/launches/latest'
     directory = 'images/'
     path_dir(directory)
-    # str = '//imgsrc.hubblesite.org/hvi/uploads/image_file/image_attachment/1/full_jpg.jpg'
 
     # response_spacex = get_spacex_api(spacex_url)
     #
     # image_links = get_image_link(response_spacex)
     # fetch_spacex_last_launch(image_links, directory)
-
-    last_url = get_hubble_image_url(hubble_api)
-    download_hubble_image(last_url, hubble_params, directory)
+    #
+    # last_url = get_hubble_image_url(hubble_api_image_id)
+    # download_hubble_image(last_url, params_image_id, directory)
+    get_collection_id(hubble_api, params_collection_name, directory)
 
 
 if __name__ == '__main__':
