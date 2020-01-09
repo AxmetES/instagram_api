@@ -1,11 +1,11 @@
 ## Script for working with Hubble api, Space x api, Instagram api.
 
 This project have three scripts, with them you can 
-* download hubble images with [Hubble open API](http://hubblesite.org/api/v3/images) 
-* download hubble images with  [Space X API](https://api.spacexdata.com/v3/launches/latest) and 
+* download hubble images with [Hubble open API](http://hubblesite.org/api/v3/images).
+* download hubble images with  [Space X API](https://api.spacexdata.com/v3/launches/latest).
 * cut images in `images` folder and save them in `new_images` folder 
-to prepare them to upload to Instagram
-* upload them to Instagram with [instabot](https://github.com/instagrambot/instabot)
+to prepare them to upload to Instagram.
+* upload them to Instagram with [instabot](https://github.com/instagrambot/instabot).
 
 ## Getting Started
 
