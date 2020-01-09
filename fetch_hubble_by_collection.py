@@ -1,5 +1,6 @@
 import requests
 import os
+import argparse
 
 
 def path_dir(directory):
@@ -42,8 +43,16 @@ def get_collection_id(url, params, directory):
         get_collections_urls(item, directory)
 
 
+def get_argparse():
+    parser = argparse.ArgumentParser(description='Hubble images collection')
+    parser.add_argument('collection_name', type=str, help=' name of images collection')
+    args = parser.parse_args()
+    return args
+
+
 def main():
-    params_collection_name = {'page': 'all', 'collection_name': 'printshop'}
+    args = get_argparse()
+    params_collection_name = {'page': 'all', 'collection_name': f{args.collection_name}}
     hubble_api = f'http://hubblesite.org/api/v3/images'
     directory = 'images/'
     path_dir(directory)
