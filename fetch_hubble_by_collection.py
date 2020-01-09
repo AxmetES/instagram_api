@@ -39,8 +39,8 @@ def get_collection_id(url, params, directory):
     response.raise_for_status()
     response_data = response.json()
     images_id = [item['id'] for item in response_data]
-    for item in images_id:
-        get_collections_urls(item, directory)
+    for id in images_id:
+        get_collections_urls(id, directory)
 
 
 def get_argparse():
@@ -51,10 +51,11 @@ def get_argparse():
 
 
 def main():
-    args = get_argparse()
+    # args = get_argparse()
     directory = 'images/'
     path_dir(directory)
-    params_collection_name = {'page': 'all', 'collection_name': f'{args.collection_name}'}
+    # params_collection_name = {'page': 'all', 'collection_name': f'{args.collection_name}'}
+    params_collection_name = {'page': 'all', 'collection_name': 'printshop'}
     hubble_api = f'http://hubblesite.org/api/v3/images'
 
     get_collection_id(hubble_api, params_collection_name, directory)

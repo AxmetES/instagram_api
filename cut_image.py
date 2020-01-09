@@ -5,9 +5,9 @@ import re
 
 def crop_image(dir_old, dir_new):
     collection = sorted(os.listdir(dir_old))
-    for file in collection:
-        if re.match(r'\b\w+(.jpg|.png|.jpeg)\b', file):
-            image = Image.open(f'{dir_old}{file}')
+    for file_name in collection:
+        if re.match(r'\b\w+(.jpg|.png|.jpeg)\b', file_name):
+            image = Image.open(f'{dir_old}{file_name}')
             width = image.width
             height = image.height
             if width > height:
@@ -16,15 +16,15 @@ def crop_image(dir_old, dir_new):
                 print(diff_width)
                 coordinates = (diff_width, 0, width - diff_width, height)
                 cropped_image = image.crop(coordinates)
-                cropped_image.save(f'{dir_new}{file}')
+                cropped_image.save(f'{dir_new}{file_name}')
             elif height > width:
                 diff_height = height - width
                 diff_height = diff_height / 2
                 coordinates = (0, diff_height, width, height - diff_height)
                 cropped_image = image.crop(coordinates)
-                cropped_image.save(f'{dir_new}{file}')
+                cropped_image.save(f'{dir_new}{file_name}')
             else:
-                image.save(f'{dir_new}{file}')
+                image.save(f'{dir_new}{file_name}')
 
 
 def main():
