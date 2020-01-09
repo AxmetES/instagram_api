@@ -3,7 +3,7 @@ import os
 import argparse
 
 
-def path_dir(directory):
+def check_dir(directory):
     os.makedirs(directory, exist_ok=True)
 
 
@@ -48,7 +48,7 @@ def main():
 
     hubble_api_image_id = f'http://hubblesite.org/api/v3/image/{params_image_id}'
     directory = 'images/'
-    path_dir(directory)
+    check_dir(directory)
 
     last_url = get_hubble_image_url(hubble_api_image_id)
     download_hubble_image(last_url, params_image_id, directory)

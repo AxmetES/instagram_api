@@ -3,7 +3,7 @@ import os
 import argparse
 
 
-def path_dir(directory):
+def check_dir(directory):
     os.makedirs(directory, exist_ok=True)
 
 
@@ -53,7 +53,7 @@ def get_argparse():
 def main():
     args = get_argparse()
     directory = 'images/'
-    path_dir(directory)
+    check_dir(directory)
     params_collection_name = {'page': 'all', 'collection_name': f'{args.collection_name}'}
     hubble_api = f'http://hubblesite.org/api/v3/images'
 
