@@ -18,7 +18,6 @@ def upload_images(dir, bot):
     for image_name in collection:
         if re.match(r'\b\w+(.jpg|.png|.jpeg)\b', image_name):
             bot.upload_photo(f'{dir}{image_name}', caption='the task')
-            print('image was uploaded')
 
 
 def main():

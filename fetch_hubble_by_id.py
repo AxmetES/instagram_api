@@ -14,7 +14,6 @@ def download_hubble_image(url, params, directory):
     response.raise_for_status()
     with open(directory + filename, 'wb') as file:
         file.write(response.content)
-    print(f'id {params} image downloaded')
 
 
 def get_hubble_image_url(url):
