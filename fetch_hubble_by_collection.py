@@ -9,12 +9,11 @@ def check_dir(directory):
 
 def download_hubble_image(url, params, directory):
     extension = get_file_extension(url)
-    filename = f'{params}.{extension}'
+    filename = f'{params}{extension}'
     response = requests.get(url, verify=False)
     response.raise_for_status()
     with open(directory + filename, 'wb') as file:
         file.write(response.content)
-    print(f'id {params} image downloaded')
 
 
 def get_collections_urls(params, directory):
@@ -29,8 +28,8 @@ def get_collections_urls(params, directory):
 
 
 def get_file_extension(url):
-    lst = url.split('.')
-    extension = lst[-1]
+    split_result = os.path.split(url)
+    extension = split_result[-1]
     return extension
 
 
