@@ -1,31 +1,32 @@
 import os
-import argparse
-import re
 
+import argparse
 from instabot import Bot
+from common_functions import make_dir
+
+
+def upload_images(dir, bot):
+    collection = os.listdir(dir)
+    for image_name in collection:
+        if image_name.endswith(('.png', '.jpg', '.jpeg')):
+            bot.upload_photo(f'{dir}{image_name}', caption='the task')
 
 
 def get_argparse():
-    parser = argparse.ArgumentParser(description="Some description")
+    parser = argparse.ArgumentParser(description='Image ID to download file')
     parser.add_argument('user', type=str, help='instagram user')
     parser.add_argument('password', type=str, metavar='password', help='instagram password')
     args = parser.parse_args()
     return args
 
 
-def upload_images(dir, bot):
-    collection = os.listdir(dir)
-    for image_name in collection:
-        if re.match(r'\b\w+(.jpg|.png|.jpeg)\b', image_name):
-            bot.upload_photo(f'{dir}{image_name}', caption='the task')
-
-
 def main():
-    dir = 'new_images/'
+    directory = 'new_images/'
+    make_dir(directory)
     args = get_argparse()
     bot = Bot()
     bot.login(username=args.user, password=args.password)
-    upload_images(dir, bot)
+    upload_images(directory, bot)
 
 
 if __name__ == '__main__':

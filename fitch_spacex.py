@@ -1,9 +1,5 @@
 import requests
-import os
-
-
-def check_dir(directory):
-    os.makedirs(directory, exist_ok=True)
+from common_functions import make_dir
 
 
 def fetch_spacex(links, directory):
@@ -16,7 +12,7 @@ def fetch_spacex(links, directory):
             file.write(response.content)
 
 
-def get_spacex_api_last(url, directory):
+def get_spacex_api_last(url):
     respose = requests.get(url=url)
     respose.raise_for_status()
     response_spacex = respose.json()
@@ -29,7 +25,7 @@ def get_image_link(response_spacex):
     return image_links
 
 
-def get_spacex_api_all(url_all, directory):
+def get_spacex_api_all(url_all):
     links_index = []
     response = requests.get(url=url_all)
     response_all = response.json()
@@ -45,11 +41,11 @@ def main():
     spacex_url_last = 'https://api.spacexdata.com/v3/launches/latest'
     spacex_url_all = 'https://api.spacexdata.com/v3/launches'
     directory = 'images/'
-    check_dir(directory)
+    make_dir(directory)
 
-    lust_links = get_spacex_api_last(spacex_url_last, directory)
-    if lust_links == []:
-        all_links = get_spacex_api_all(spacex_url_all, directory)
+    lust_links = get_spacex_api_last(spacex_url_last)
+    if not lust_links:
+        all_links = get_spacex_api_all(spacex_url_all)
         fetch_spacex(all_links, directory)
     else:
         fetch_spacex(lust_links, directory)

@@ -1,10 +1,6 @@
-import requests
-import os
 import argparse
-
-
-def check_dir(directory):
-    os.makedirs(directory, exist_ok=True)
+import requests
+from common_functions import make_dir, get_file_extension
 
 
 def download_hubble_image(url, params, directory):
@@ -28,12 +24,6 @@ def get_hubble_image_url(url):
     return last_url
 
 
-def get_file_extension(url):
-    lst = url.split('.')
-    extension = lst[-1]
-    return extension
-
-
 def get_argparse():
     parser = argparse.ArgumentParser(description='Image ID to download file')
     parser.add_argument('id', type=int, help='image id')
@@ -48,7 +38,7 @@ def main():
 
     hubble_api_image_id = f'http://hubblesite.org/api/v3/image/{params_image_id}'
     directory = 'images/'
-    check_dir(directory)
+    make_dir(directory)
 
     last_url = get_hubble_image_url(hubble_api_image_id)
     download_hubble_image(last_url, params_image_id, directory)
