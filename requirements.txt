@@ -1,4 +1,4 @@
 image==1.5.27
 instabot==0.95.0
-Pillow==7.0.0
+Pillow==9.3.0
 requests==2.22.0
